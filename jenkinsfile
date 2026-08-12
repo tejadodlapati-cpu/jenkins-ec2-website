@@ -48,7 +48,7 @@ steps {
 echo 'Verifying website'
 
 sh '''
-curl -I http://localhost
+curl -I http://127.0.0.1
 '''
 
 echo 'Website verification completed'
