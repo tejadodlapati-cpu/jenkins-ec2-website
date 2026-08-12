@@ -1,0 +1,58 @@
+pipeline {
+agent any
+
+stages {
+
+stage('Checkout') {
+steps {
+git branch: 'main',
+url: 'https://github.com/tejadodlapati-cpu/jenkins-ec2-website.git'
+}
+}
+
+stage('Build') {
+steps {
+echo 'Build started'
+sh 'ls -la'
+echo 'Build completed successfully'
+}
+}
+
+stage('Test') {
+steps {
+echo 'Running tests'
+
+sh '''
+test -f index.html
+grep -q "<html" index.html
+'''
+
+echo 'Tests passed successfully'
+}
+}
+
+stage('Deploy') {
+steps {
+echo 'Deploying website'
+
+sh '''
+sudo cp index.html /var/www/mywebsite/index.html
+'''
+
+echo 'Deployment completed successfully'
+}
+}
+
+stage('Verify') {
+steps {
+echo 'Verifying website'
+
+sh '''
+curl -I http://localhost
+'''
+
+echo 'Website verification completed'
+}
+}
+}
+}
